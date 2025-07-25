@@ -16,7 +16,7 @@ const Login = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const navigate = useNavigate();
-
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -41,7 +41,7 @@ const Login = () => {
     if (!email) return toast.error('Please enter your email');
     try {
       setLoading(true);
-      await axios.post('http://localhost:8080/api/auth/send-otp', { email });
+      await axios.post(`${BASE_URL}/api/auth/send-otp`, { email });
       setOtpSent(true);
       toast.success('OTP sent to your email');
       setResendTimer(RESEND_COOLDOWN_SECONDS);
@@ -56,7 +56,7 @@ const Login = () => {
     if (resendTimer > 0) return;
     try {
       setLoading(true);
-      await axios.post('http://localhost:8080/api/auth/resend-otp', { email });
+      await axios.post(`${BASE_URL}/api/auth/resend-otp`, { email });
       toast.success('OTP resent to your email');
       setResendTimer(RESEND_COOLDOWN_SECONDS);
     } catch (err) {
@@ -70,7 +70,7 @@ const Login = () => {
     if (!otp) return toast.error('Please enter OTP');
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:8080/api/auth/login', { email, otp });
+      const res = await axios.post(`${BASE_URL}/api/auth/login`, { email, otp });
       const token = res.data.token;
       localStorage.setItem('token', token);
       toast.success('Logged in successfully');

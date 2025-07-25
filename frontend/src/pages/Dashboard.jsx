@@ -19,6 +19,7 @@ const Dashboard = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const token = localStorage.getItem('token');
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -33,7 +34,7 @@ const Dashboard = () => {
       if (filterStatus) query += `&status=${filterStatus}`;
       if (filterCategory) query += `&category=${filterCategory}`;
 
-      const res = await axios.get(`http://localhost:8080/api/payments${query}`, {
+      const res = await axios.get(`${BASE_URL}/api/payments${query}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

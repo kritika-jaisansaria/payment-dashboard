@@ -19,6 +19,9 @@ const PaymentModal = ({ onClose, fetchPayments, editingPayment }) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const token = localStorage.getItem('token');
 
+  // Base URL from env
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
+
   useEffect(() => {
     if (editingPayment) {
       setForm({
@@ -69,12 +72,12 @@ const PaymentModal = ({ onClose, fetchPayments, editingPayment }) => {
       };
 
       if (editingPayment) {
-        await axios.put(`http://localhost:8080/api/payments/${editingPayment._id}`, payload, {
+        await axios.put(`${BASE_URL}/api/payments/${editingPayment._id}`, payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success('Payment updated successfully');
       } else {
-        await axios.post(`http://localhost:8080/api/payments`, payload, {
+        await axios.post(`${BASE_URL}/api/payments`, payload, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success('Payment added successfully');

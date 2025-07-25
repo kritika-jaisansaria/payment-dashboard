@@ -6,9 +6,11 @@ const PaymentRow = ({ payment, fetchPayments, openModal, isMobile }) => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const token = localStorage.getItem('token');
 
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
+
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/payments/${payment._id}`, {
+      await axios.delete(`${BASE_URL}/api/payments/${payment._id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success('Payment deleted successfully');
@@ -41,7 +43,6 @@ const PaymentRow = ({ payment, fetchPayments, openModal, isMobile }) => {
     fontWeight: '500',
   };
 
-  // Updated mobile cell style: vertical stack label & value
   const tdMobileStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -49,7 +50,6 @@ const PaymentRow = ({ payment, fetchPayments, openModal, isMobile }) => {
     borderBottom: '1px solid #eee',
   };
 
-  // New label style for mobile: uppercase, green, small font, spaced nicely
   const labelStyle = {
     fontWeight: '600',
     fontSize: '0.8rem',

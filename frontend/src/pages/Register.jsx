@@ -27,6 +27,9 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [resendTimer, setResendTimer] = useState(0);
 
+  // Use env variable for backend URL
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
+
   useEffect(() => {
     let interval = null;
     if (resendTimer > 0) {
@@ -45,7 +48,7 @@ const Register = () => {
     }
     try {
       setLoading(true);
-      await axios.post('http://localhost:8080/api/auth/send-otp', {
+      await axios.post(`${BASE_URL}/api/auth/send-otp`, {
         email: form.email,
         name: form.name,
       });
@@ -63,7 +66,7 @@ const Register = () => {
     if (resendTimer > 0) return;
     try {
       setLoading(true);
-      await axios.post('http://localhost:8080/api/auth/resend-otp', { email: form.email });
+      await axios.post(`${BASE_URL}/api/auth/resend-otp`, { email: form.email });
       toast.success('OTP resent to your email');
       setResendTimer(RESEND_COOLDOWN_SECONDS);
     } catch (err) {
@@ -77,7 +80,7 @@ const Register = () => {
     if (!form.otp) return toast.error('Please enter the OTP');
     try {
       setLoading(true);
-      const res = await axios.post('http://localhost:8080/api/auth/register', form);
+      const res = await axios.post(`${BASE_URL}/api/auth/register`, form);
       localStorage.setItem('token', res.data.token);
       toast.success('Registered successfully');
       setTimeout(() => navigate('/dashboard'), 1500);
