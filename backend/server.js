@@ -10,6 +10,11 @@ const paymentRoutes = require('./routes/paymentRoutes');
 
 const app = express();
 
+// Test route for deployment verification
+app.get('/test', (req, res) => {
+  res.send('Backend is working');
+});
+
 app.use(cors());
 app.use(express.json());
 
